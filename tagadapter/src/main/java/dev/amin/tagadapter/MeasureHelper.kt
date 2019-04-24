@@ -10,8 +10,9 @@ class MeasureHelper(
     private val count: Int
 ) {
 
-    // Contains the span count [position] => [spanCount]
-    private val spanMap = hashMapOf<Int, Float>()
+    private var measuredCount = 0
+
+    private val rowManager = TagRowManager()
 
     private var baseCell: Float = 0f
 
@@ -19,7 +20,11 @@ class MeasureHelper(
         baseCell = (width / 20).toFloat()
     }
 
-    fun shouldMeasure() = spanCount.size != count
+    fun shouldMeasure() = measuredCount != count
+
+    fun getItems() = rowManager.getSortedTags()
+
+    fun getSpans() = rowManager.getSortedSpans()
 
     private fun cellMeasured() {
 
@@ -27,7 +32,7 @@ class MeasureHelper(
             adapter.measuringDone = true
     }
 
-    fun measure(holder: TagAdapter.Holder, position: Int) {
+    fun measure(holder: TagAdapter.Holder, tag: Tag) {
 
         // Get the ItemView and minimize it's height as small as possible
         val itemView = holder.itemView.apply {
@@ -43,8 +48,11 @@ class MeasureHelper(
                 // calculate the required span here and add it to spanCount.
                 // Also Create a reference to rowManager here and add the span
 
-                spanCount[position] =
-                    ((itemView.rowTitle.width + marginTotal) / baseCell)
+                val span = (itemView.rowTitle.width + marginTotal) / baseCell
+
+                measuredCount++
+
+                rowManager.add(span, tag)
 
                 cellMeasured()
 

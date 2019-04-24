@@ -36,7 +36,8 @@ class TagAdapter(
         recyclerView?.apply {
 
             visibility = View.VISIBLE
-            layoutManager = MultipleSpanGridLayoutManager(context, 20)
+            tagList = measureHelper.getItems()
+            layoutManager = MultipleSpanGridLayoutManager(context, 20, measureHelper.getSpans())
         }
     }
 
@@ -68,12 +69,12 @@ class TagAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
-        holder.setData(tagList[position])
+        val tag = tagList[position]
 
-        Log.e("Tag", "ViewHolder $position Bind")
+        holder.setData(tag)
 
         if (measureHelper.shouldMeasure())
-            measureHelper.measure(holder, position)
+            measureHelper.measure(holder, tag)
     }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
