@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.row_tag.view.*
@@ -11,12 +12,12 @@ import kotlin.properties.Delegates
 
 class TagAdapter(
     private val context: Context,
-    private val tagList: MutableList<Tag>
+    private var tagList: MutableList<Tag>
 ) : RecyclerView.Adapter<TagAdapter.Holder>() {
 
     private val measureHelper = MeasureHelper(this, tagList.size)
 
-    private var recyclerView: RecyclerView? = null
+    var recyclerView: RecyclerView? = null
 
     var measuringDone by Delegates.observable(false) { _, _, newVal ->
         if (newVal)
@@ -28,12 +29,18 @@ class TagAdapter(
 
         recyclerView ?: return
 
-        recyclerView?.layoutManager = LinearLayoutManager(context)
+        recyclerView?.apply {
+
+            visibility = View.VISIBLE
+            layoutManager = MultipleSpanGridLayoutManager(context, 20)
+        }
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        this.recyclerView = recyclerView
+        this.recyclerView = recyclerView.apply {
+            visibility = View.INVISIBLE
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -52,6 +59,7 @@ class TagAdapter(
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun setData(tag: Tag) {
 
+            itemView.rowTitle.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
             itemView.rowTitle.text = tag.title
         }
     }
