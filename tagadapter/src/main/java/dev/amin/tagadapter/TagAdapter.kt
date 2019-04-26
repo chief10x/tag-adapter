@@ -71,17 +71,26 @@ class TagAdapter(
 
         val tag = tagList[position]
 
-        holder.setData(tag)
+        val shouldMeasure = measureHelper.shouldMeasure()
 
-        if (measureHelper.shouldMeasure())
+        holder.setData(tag, shouldMeasure)
+
+        if (shouldMeasure)
             measureHelper.measure(holder, tag)
     }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun setData(tag: Tag) {
+        fun setData(tag: Tag, shouldMeasure: Boolean) {
 
-            itemView.rowTitle.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
             itemView.rowTitle.text = tag.title
+
+            itemView.rowTitle.layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT
+            itemView.rowTitle.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+
+            /* if the measuring is done set the width to fill the whole cell to avoid unexpected
+            empty spaces between the cells */
+            if (!shouldMeasure)
+                itemView.rowTitle.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
         }
     }
 }
