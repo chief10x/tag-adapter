@@ -37,7 +37,7 @@ class TagAdapter(
 
             visibility = View.VISIBLE
             tagList = measureHelper.getItems()
-            layoutManager = MultipleSpanGridLayoutManager(context, 20, measureHelper.getSpans())
+            layoutManager = MultipleSpanGridLayoutManager(context, 52, measureHelper.getSpans())
         }
     }
 
@@ -50,13 +50,13 @@ class TagAdapter(
             viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
 
+                    recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
                     // Measure the BaseCell on MeasureHelper and Start the Adapter
                     measureHelper.measureBaseCell(recyclerView.width)
 
                     ready = true
                     notifyDataSetChanged()
-
-                    recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             })
         }

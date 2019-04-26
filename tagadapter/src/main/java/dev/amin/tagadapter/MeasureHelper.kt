@@ -17,7 +17,7 @@ class MeasureHelper(
     private var baseCell: Float = 0f
 
     fun measureBaseCell(width: Int) {
-        baseCell = (width / 20).toFloat()
+        baseCell = (width / 52).toFloat()
     }
 
     fun shouldMeasure() = measuredCount != count
