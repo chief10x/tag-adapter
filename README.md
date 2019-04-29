@@ -6,7 +6,7 @@
 
 ### Usage
 
-Just TagAdapter as the adapter of the recyclerView.
+Just set TagAdapter as the adapter of the recyclerView.
 ```Kotlin
 recyclerView.apply {
 
