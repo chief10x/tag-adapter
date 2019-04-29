@@ -2,21 +2,28 @@ package dev.amin.tagadapter
 
 class TagRowManager {
 
-    val rowList = mutableListOf<TagRow>()
+    /***
+     * List of all the rows inside the row manager.
+     */
+    private val rowList = mutableListOf<TagRow>()
         .apply {
+
+            // Manually add the first empty row.
             add(TagRow())
         }
 
+    /***
+     * Loop through the rowList to fit the required span
+     */
     fun add(spanRequired: Float, tag: Tag) {
 
         for (i in 0..rowList.size) {
 
             val tagRow = rowList[i]
 
-            // Id the title was added and was fit to the list in dreamTitleRow
-            if (tagRow.addTag(spanRequired, tag)) {
+            // If the title was added and was fit to the list in dreamTitleRow
+            if (tagRow.addTag(spanRequired, tag))
                 break
-            }
 
             // If the model did not fit in any of current cells
             if (i == rowList.lastIndex)
@@ -24,26 +31,17 @@ class TagRowManager {
         }
     }
 
-    fun getSortedSpans(): MutableList<Int> {
-
-        val spans = mutableListOf<Int>()
-
-        rowList.forEach {
-            spans.addAll(it.spanList)
+    fun getSortedSpans() =
+        mutableListOf<Int>().apply {
+            rowList.forEach {
+                addAll(it.spanList)
+            }
         }
 
-        return spans
-    }
-
-    fun getSortedTags(): MutableList<Tag> {
-
-        val tags = mutableListOf<Tag>()
-
-        rowList.forEach {
-
-            tags.addAll(it.tagList)
+    fun getSortedTags() =
+        mutableListOf<Tag>().apply {
+            rowList.forEach {
+                addAll(it.tagList)
+            }
         }
-
-        return tags
-    }
 }
