@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         rv.apply {
-            adapter = TagAdapter(this@MainActivity, tagList)
+            adapter = TagAdapter(tagList)
             layoutManager = LinearLayoutManager(this@MainActivity)
         }
     }
@@ -23,18 +23,37 @@ class MainActivity : AppCompatActivity() {
         get() {
             return mutableListOf(
                 Tag("Exercise"),
-                Tag("Eat Healthy"),
+                Tag("Be Cool"),
                 Tag("Floss"),
-                Tag("Read the Book"),
+                Tag("Read the Sign"),
                 Tag("Meditation"),
                 Tag("Go Crazy"),
                 Tag("Drink Water"),
-                Tag("No Nicotine"),
-                Tag("No Alchohol"),
-                Tag("aaaaa"),
-                Tag("abskdgdga"),
-                Tag("ash"),
-                Tag("auhf aidhfhusfbj")
+                Tag("Be Cool in an awesome way"),
+                Tag("No Alcohol"),
+                Tag("Code like Crazy"),
+                Tag("Zero Life"),
+                Tag("Drunk in Funeral"),
+                Tag("Small"),
+                Tag("Not so Small"),
+                Tag("Java"),
+                Tag("Android"),
+                Tag("Proud looser :D"),
+                Tag("No Burgers!"),
+                Tag("Play Guitar"),
+                Tag("Clap the Article"),
+                Tag("Walk"),
+                Tag("Medium is Awesome"),
+                Tag("Kotlin"),
+                Tag("Dream"),
+                Tag("Freedom"),
+                Tag("Less Sugar"),
+                Tag("Discipline"),
+                Tag("No to Drugs :D"),
+                Tag("Avengers"),
+                Tag("Margarita"),
+                Tag("Candies"),
+                Tag("Listen to Opeth")
             )
         }
 }
