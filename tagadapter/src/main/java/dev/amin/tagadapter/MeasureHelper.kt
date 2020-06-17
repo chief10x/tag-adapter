@@ -56,7 +56,7 @@ class MeasureHelper(
             adapter.measuringDone = true
     }
 
-    fun measure(holder: TagAdapter.ItemViewHolder, tag: Tag) {
+    fun measure(holder: TagAdapter.ItemViewHolder, tag: Taggable) {
 
         /* Get the ItemView and minimize it's height as small as possible
             to fit as many cells as it's possible in the screen. */

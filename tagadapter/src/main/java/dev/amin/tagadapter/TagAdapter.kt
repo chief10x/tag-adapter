@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlin.properties.Delegates
 
 class TagAdapter(
-    private var tagList: MutableList<Tag>,
+    private var tagList: MutableList<Taggable>,
     @LayoutRes private val itemLayoutRes: Int = R.layout.row_tag
 ) : RecyclerView.Adapter<TagAdapter.ItemViewHolder>() {
+
+    var onTaggableClickListener: OnTaggableClickListener? = null
 
     /***
      * Measuring Helper which is used to measure each row of the recyclerView
@@ -47,7 +49,7 @@ class TagAdapter(
      * Called to update the adapter with the new LayoutManager.
      */
     private fun update() {
-        with(recyclerView?: return) {
+        with(recyclerView ?: return) {
 
             visibility = View.VISIBLE
 
@@ -105,6 +107,7 @@ class TagAdapter(
         val shouldMeasure = measureHelper.shouldMeasure()
 
         holder.setData(tag, shouldMeasure)
+        holder.setClickListener(tag, onTaggableClickListener)
 
         if (shouldMeasure) {
             measureHelper.measure(holder, tag)
@@ -112,10 +115,9 @@ class TagAdapter(
     }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun setData(tag: Tag, shouldMeasure: Boolean) {
-
+        fun setData(tag: Taggable, shouldMeasure: Boolean) {
             with(itemView as TextView) {
-                text = tag.title
+                text = tag.tag
 
                 /*
                 * set the height to normal, because in the measureHelper in order to fit
@@ -131,6 +133,10 @@ class TagAdapter(
                     layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
                 }
             }
+        }
+
+        fun setClickListener(tag: Taggable, onTaggableClickListener: OnTaggableClickListener?) {
+            onTaggableClickListener?.let { itemView.setOnClickListener { onTaggableClickListener.onTaggableClick(tag) } }
         }
     }
 }
