@@ -19,7 +19,7 @@ class TagRow {
      */
     val spanList = mutableListOf<Int>()
 
-    fun addTag(spanRequired: Float, tag: Tag) : Boolean {
+    fun addTag(spanRequired: Float, tag: Tag): Boolean {
 
         // if the current row has enough available span
         if (spanRequired < freeSpans)

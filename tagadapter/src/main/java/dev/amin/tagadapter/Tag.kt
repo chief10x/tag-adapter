@@ -1,5 +1,5 @@
 package dev.amin.tagadapter
 
-class Tag(
+data class Tag(
     val title: String
 )
