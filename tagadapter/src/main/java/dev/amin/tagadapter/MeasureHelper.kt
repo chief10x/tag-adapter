@@ -52,8 +52,9 @@ class MeasureHelper(
      */
     private fun cellMeasured() {
 
-        if (!adapter.measuringDone && !shouldMeasure())
+        if (!adapter.measuringDone && !shouldMeasure()) {
             adapter.measuringDone = true
+        }
     }
 
     fun measure(holder: TagAdapter.ItemViewHolder, tag: Taggable) {
@@ -70,11 +71,12 @@ class MeasureHelper(
                     viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                     // Include also the horizontal margin of the layout.
-                    val marginTotal =
-                        (layoutParams as ViewGroup.MarginLayoutParams).marginStart * 2
+                    val marginLayoutParams = layoutParams as ViewGroup.MarginLayoutParams
+                    val marginTotal = marginLayoutParams.marginStart + marginLayoutParams.marginEnd
+                    val paddingTotal = paddingStart/* + paddingEnd*/
 
                     // Required span for the holder in Float/
-                    val span = (width + marginTotal) / baseCell
+                    val span = (width + marginTotal + paddingTotal) / baseCell
 
                     // Increase measured count.
                     measuredCount++

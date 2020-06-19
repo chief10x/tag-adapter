@@ -136,7 +136,13 @@ class TagAdapter(
         }
 
         fun setClickListener(tag: Taggable, onTaggableClickListener: OnTaggableClickListener?) {
-            onTaggableClickListener?.let { itemView.setOnClickListener { onTaggableClickListener.onTaggableClick(tag) } }
+            onTaggableClickListener?.let {
+                itemView.setOnClickListener {
+                    onTaggableClickListener.onTaggableClick(
+                        tag
+                    )
+                }
+            }
         }
     }
 }
