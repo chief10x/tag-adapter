@@ -2,6 +2,7 @@ package dev.amin.tagadapterexample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.amin.tagadapter.OnTaggableClickListener
@@ -15,16 +16,34 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recyclerView.apply {
-            val tagAdapter = TagAdapter(tagList)
-            tagAdapter.onTaggableClickListener = object : OnTaggableClickListener {
-                override fun onTaggableClick(taggable: Taggable) {
-                    Toast.makeText(this@MainActivity, "Clicked on: ${taggable.tag}", Toast.LENGTH_SHORT)
-                        .show()
+        findViewById<View>(R.id.button1).setOnClickListener {
+            recyclerView.apply {
+                val tagAdapter = TagAdapter(tagList, R.layout.view_item_tag)
+                tagAdapter.onTaggableClickListener = object : OnTaggableClickListener {
+                    override fun onTaggableClick(taggable: Taggable) {
+                        Toast.makeText(this@MainActivity, "Clicked on: ${taggable.tag}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
+                adapter = tagAdapter
+                layoutManager = LinearLayoutManager(this@MainActivity)
+
             }
-            adapter = tagAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
+        }
+
+        findViewById<View>(R.id.button2).setOnClickListener {
+            recyclerView.apply {
+                val tagAdapter = TagAdapter(tagList2, R.layout.view_item_tag)
+                tagAdapter.onTaggableClickListener = object : OnTaggableClickListener {
+                    override fun onTaggableClick(taggable: Taggable) {
+                        Toast.makeText(this@MainActivity, "Clicked on: ${taggable.tag}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                adapter = tagAdapter
+                layoutManager = LinearLayoutManager(this@MainActivity)
+
+            }
         }
     }
 
@@ -73,6 +92,15 @@ class MainActivity : AppCompatActivity() {
                 MyTaggableClass("Run for your Life"),
                 MyTaggableClass("Margarita"),
                 MyTaggableClass("Candies")
+            )
+        }
+    private val tagList2: MutableList<Taggable>
+        get() {
+            return mutableListOf(
+                MyTaggableClass("Pop"),
+                MyTaggableClass("Be Cool"),
+                MyTaggableClass("Floss"),
+                MyTaggableClass("Read the Sign")
             )
         }
 }
