@@ -73,7 +73,11 @@ class TagAdapter(
 
         this.recyclerView = recyclerView
         with(recyclerView) {
-            visibility = View.INVISIBLE
+            if (measureHelper.shouldMeasure()){
+                visibility = View.INVISIBLE
+            }else{
+                update()
+            }
 
             viewTreeObserver.addOnGlobalLayoutListener(object :
                 ViewTreeObserver.OnGlobalLayoutListener {

@@ -50,8 +50,7 @@ class MeasureHelper(
      * if there is no more cell to measure it will notify the adapter
      * to update it self.
      */
-    private fun cellMeasured() {
-
+    fun cellMeasured() {
         if (!adapter.measuringDone && !shouldMeasure()) {
             adapter.measuringDone = true
         }
