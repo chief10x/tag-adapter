@@ -87,7 +87,7 @@ class TagAdapter(
                     recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                     // Measure the BaseCell on MeasureHelper.
-                    measureHelper.measureBaseCell(recyclerView.width)
+                    measureHelper.measureBaseCell(recyclerView.width- recyclerView.paddingStart - recyclerView.paddingEnd)
 
                     ready = true
 
@@ -134,7 +134,7 @@ class TagAdapter(
                 * empty spaces between the cells
                 * */
                 if (!shouldMeasure) {
-                    layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
+                    layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT
                 }
             }
         }

@@ -75,7 +75,7 @@ class MeasureHelper(
                     val paddingTotal = paddingStart/* + paddingEnd*/
 
                     // Required span for the holder in Float/
-                    val span = (width + marginTotal + paddingTotal) / baseCell
+                    val span = (width + marginTotal /*+ paddingTotal*/) / baseCell
 
                     // Increase measured count.
                     measuredCount++
