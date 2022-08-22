@@ -1,0 +1,102 @@
+if (project.hasProperty("android")) {
+    //region Android libraries
+    task androidSourcesJar(type: Jar) {
+        getArchiveClassifier().set('sources')
+        from android.sourceSets.main.java.srcDirs//full sources
+//        from android.sourceSets.main.java.sourceFiles//no sources, only /* compiled code */
+    }
+
+    task androidJavadocs(type: Javadoc) {
+        failOnError = false
+        // all the sources of the current module
+        source = android.sourceSets.main.java.srcDirs
+        // the Android SDK classpath
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        // all the dependencies classpaths
+        classpath += configurations.compile
+
+        classpath += files("build/generated/source/r/release")
+        classpath += files("build/generated/source/buildConfig/release")
+
+        android.libraryVariants.all { variant ->
+            if (variant.name == 'release') {
+                JavaCompile javaCompile
+                if (variant.hasProperty('javaCompileProvider')) {
+                    // Android 3.3.0+
+                    javaCompile = variant.javaCompileProvider.get()
+                } else {
+                    javaCompile = variant.javaCompile
+                }
+                owner.classpath += javaCompile.classpath
+            }
+        }
+
+        // Honestly I do not remember why it's a good idea to exclude these
+        exclude '**/*.kt', '**/R.html', '**/R.*.html', '**/index.html', '**/R$*.class', '**/R.java', '**/BuildConfig.java', '**/R.class', '**/BuildConfig.class'
+
+        options {
+            encoding "utf-8"
+            // Java reference
+            links "http://docs.oracle.com/javase/7/docs/api/"
+            links("http://docs.oracle.com/javase/8/docs/api/");
+
+            // dependencies API references (I should probably move these in the project or something)
+            links("http://reactivex.io/RxJava/javadoc/");
+            //links("https://google.github.io/gson/apidocs/");
+
+            // Android reference is not standard javadoc so I need to use offline directory
+            linksOffline("http://d.android.com/reference/", "${android.sdkDirectory}/docs/reference")
+
+            // Java 8 javadoc is more strict, This disable that strictness
+            if (JavaVersion.current().isJava8Compatible()) {
+                addStringOption('Xdoclint:none', '-quiet')
+                addStringOption('Xwerror', '-quiet')
+            }
+
+            addStringOption('encoding', 'UTF-8')
+            addStringOption('charSet', 'UTF-8')
+        }
+    }
+
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+        getArchiveClassifier().set('javadoc')
+        from androidJavadocs.destinationDir
+    }
+
+    artifacts {
+        archives androidSourcesJar
+        archives androidJavadocsJar
+    }
+    //endregion
+} else { // Java libraries
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        getArchiveClassifier().set('sources')
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        getArchiveClassifier().set('javadoc')
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+}
+
+//added because of gradlew install is fall with error: cannot find symbol  annotations
+afterEvaluate {
+    if (project.hasProperty("android")) {
+        androidJavadocs.classpath += files(android.libraryVariants.collect { variant ->
+            JavaCompile javaCompile
+            if (variant.hasProperty('javaCompileProvider')) {
+                // Android 3.3.0+
+                javaCompile = variant.javaCompileProvider.get()
+            } else {
+                javaCompile = variant.javaCompile
+            }
+            javaCompile.classpath.files
+        })
+    }
+}
