@@ -15,7 +15,7 @@ class TagRowManager {
     /***
      * Loop through the rowList to fit the required span
      */
-    fun add(spanRequired: Float, tag: Tag) {
+    fun add(spanRequired: Float, tag: Taggable) {
 
         for (i in 0..rowList.size) {
 
@@ -39,7 +39,7 @@ class TagRowManager {
         }
 
     fun getSortedTags() =
-        mutableListOf<Tag>().apply {
+        mutableListOf<Taggable>().apply {
             rowList.forEach {
                 addAll(it.tagList)
             }

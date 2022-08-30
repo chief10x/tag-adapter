@@ -1,0 +1,13 @@
+ext {
+    def propertiesFile = file('properties/version/version.properties')
+    appVersionCode = 1;
+    appVersionName = "1.0";
+    if (propertiesFile.canRead()) {
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(propertiesFile))
+        appVersionCode = Integer.parseInt(properties['VERSION_CODE']).intValue();
+        appVersionName = String.valueOf(properties['VERSION_NAME']);
+    } else {
+        throw new Exception("Could not read properties/version/version.properties!")
+    }
+}

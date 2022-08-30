@@ -1,0 +1,31 @@
+ext {
+    def propertiesFile = file('properties/info/libraryInfo.properties')
+    if (!propertiesFile.canRead()) {
+        throw new Exception("Could not read properties/info/libraryInfo.properties!")
+    }
+
+    Properties properties = new Properties()
+    properties.load(new FileInputStream(propertiesFile))
+
+    bintrayRepo = String.valueOf(properties['libraryInfo.bintrayRepo'])//name of Repo on https://bintray.com/BINTRAY_USERNAME
+    bintrayName = String.valueOf(properties['libraryInfo.bintrayName'])//name of project on https://bintray.com/BINTRAY_USERNAME/maven
+
+    publishedGroupId = String.valueOf(properties['libraryInfo.publishedGroupId'])//only this
+    artifact = String.valueOf(properties['libraryInfo.artifact'])//should be the same as module name
+    libraryVersion = appVersionName
+
+    libraryName = String.valueOf(properties['libraryInfo.libraryName'])
+
+    libraryDescription = String.valueOf(properties['libraryInfo.libraryDescription'])
+
+    siteUrl = String.valueOf(properties['libraryInfo.siteUrl'])
+    gitUrl = String.valueOf(properties['libraryInfo.gitUrl'])
+
+    developerId = String.valueOf(properties['libraryInfo.developerId'])
+    developerName = String.valueOf(properties['libraryInfo.developerName'])
+    developerEmail = String.valueOf(properties['libraryInfo.developerEmail'])
+
+    licenseName = String.valueOf(properties['libraryInfo.licenseName'])
+    licenseUrl = String.valueOf(properties['libraryInfo.licenseUrl'])
+    allLicenses = [String.valueOf(properties['libraryInfo.allLicenses'])]
+}

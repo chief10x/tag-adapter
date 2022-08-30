@@ -2,8 +2,11 @@ package dev.amin.tagadapterexample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import dev.amin.tagadapter.Tag
+import dev.amin.tagadapter.OnTaggableClickListener
+import dev.amin.tagadapter.Taggable
 import dev.amin.tagadapter.TagAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -13,57 +16,91 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        rv.apply {
-            adapter = TagAdapter(tagList)
-            layoutManager = LinearLayoutManager(this@MainActivity)
+        findViewById<View>(R.id.button1).setOnClickListener {
+            recyclerView.apply {
+                val tagAdapter = TagAdapter(tagList, R.layout.view_item_tag)
+                tagAdapter.onTaggableClickListener = object : OnTaggableClickListener {
+                    override fun onTaggableClick(taggable: Taggable) {
+                        Toast.makeText(this@MainActivity, "Clicked on: ${taggable.tag}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                adapter = tagAdapter
+                layoutManager = LinearLayoutManager(this@MainActivity)
+
+            }
+        }
+
+        findViewById<View>(R.id.button2).setOnClickListener {
+            recyclerView.apply {
+                val tagAdapter = TagAdapter(tagList2, R.layout.view_item_tag)
+                tagAdapter.onTaggableClickListener = object : OnTaggableClickListener {
+                    override fun onTaggableClick(taggable: Taggable) {
+                        Toast.makeText(this@MainActivity, "Clicked on: ${taggable.tag}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                adapter = tagAdapter
+                layoutManager = LinearLayoutManager(this@MainActivity)
+
+            }
         }
     }
 
-    private val tagList: MutableList<Tag>
+    private val tagList: MutableList<Taggable>
         get() {
             return mutableListOf(
-                Tag("Exercise"),
-                Tag("Be Cool"),
-                Tag("Floss"),
-                Tag("Read the Sign"),
-                Tag("Meditation"),
-                Tag("Be Cool in an awesome way"),
-                Tag("Go Crazy"),
-                Tag("Drink Water"),
-                Tag("Tag Team"),
-                Tag("No Alcohol"),
-                Tag("Code like Crazy"),
-                Tag("Zombies?"),
-                Tag("Zero Life"),
-                Tag("Just Don't do it"),
-                Tag("Drunk in Funeral"),
-                Tag("Listen to Opeth"),
-                Tag("Small"),
-                Tag("Not so Small"),
-                Tag("Java"),
-                Tag("Did anyone said Zombies?"),
-                Tag("Android"),
-                Tag("Proud looser :D"),
-                Tag("Tale of two taggies"),
-                Tag("No Pain no Tag"),
-                Tag("Code for Food"),
-                Tag("Bar Blatta"),
-                Tag("No Burgers!"),
-                Tag("Play Guitar"),
-                Tag("Clap the Article"),
-                Tag("Walk"),
-                Tag("Medium is Awesome"),
-                Tag("Kotlin"),
-                Tag("Dream"),
-                Tag("Freedom"),
-                Tag("Less Sugar"),
-                Tag("The longer the Tag the longer the Cell"),
-                Tag("Discipline"),
-                Tag("No to Drugs :D"),
-                Tag("Avengers"),
-                Tag("Run for your Life"),
-                Tag("Margarita"),
-                Tag("Candies")
+                MyTaggableClass("Exercise"),
+                MyTaggableClass("Be Cool"),
+                MyTaggableClass("Floss"),
+                MyTaggableClass("Read the Sign"),
+                MyTaggableClass("Meditation"),
+                MyTaggableClass("Be Cool in an awesome way"),
+                MyTaggableClass("Go Crazy"),
+                MyTaggableClass("Drink Water"),
+                MyTaggableClass("Tag Team"),
+                MyTaggableClass("No Alcohol"),
+                MyTaggableClass("Code like Crazy"),
+                MyTaggableClass("Zombies?"),
+                MyTaggableClass("Zero Life"),
+                MyTaggableClass("Just Don't do it"),
+                MyTaggableClass("Drunk in Funeral"),
+                MyTaggableClass("Listen to Opeth"),
+                MyTaggableClass("Small"),
+                MyTaggableClass("Not so Small"),
+                MyTaggableClass("Java"),
+                MyTaggableClass("Did anyone said Zombies?"),
+                MyTaggableClass("Android"),
+                MyTaggableClass("Proud looser :D"),
+                MyTaggableClass("Tale of two taggies"),
+                MyTaggableClass("No Pain no Tag"),
+                MyTaggableClass("Code for Food"),
+                MyTaggableClass("Bar Blatta"),
+                MyTaggableClass("No Burgers!"),
+                MyTaggableClass("Play Guitar"),
+                MyTaggableClass("Clap the Article"),
+                MyTaggableClass("Walk"),
+                MyTaggableClass("Medium is Awesome"),
+                MyTaggableClass("Kotlin"),
+                MyTaggableClass("Dream"),
+                MyTaggableClass("Freedom"),
+                MyTaggableClass("Less Sugar"),
+                MyTaggableClass("The longer the Tag the longer the Cell"),
+                MyTaggableClass("Discipline"),
+                MyTaggableClass("No to Drugs :D"),
+                MyTaggableClass("Avengers"),
+                MyTaggableClass("Run for your Life"),
+                MyTaggableClass("Margarita"),
+                MyTaggableClass("Candies")
+            )
+        }
+    private val tagList2: MutableList<Taggable>
+        get() {
+            return mutableListOf(
+                MyTaggableClass("Pop"),
+                MyTaggableClass("Be Cool"),
+                MyTaggableClass("Floss"),
+                MyTaggableClass("Read the Sign")
             )
         }
 }

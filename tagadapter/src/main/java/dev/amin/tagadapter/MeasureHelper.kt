@@ -2,8 +2,7 @@ package dev.amin.tagadapter
 
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.row_tag.view.*
+import android.widget.TextView
 
 class MeasureHelper(
     private val adapter: TagAdapter,
@@ -51,43 +50,44 @@ class MeasureHelper(
      * if there is no more cell to measure it will notify the adapter
      * to update it self.
      */
-    private fun cellMeasured() {
-
-        if (!adapter.measuringDone && !shouldMeasure())
+    fun cellMeasured() {
+        if (!adapter.measuringDone && !shouldMeasure()) {
             adapter.measuringDone = true
+        }
     }
 
-    fun measure(holder: TagAdapter.Holder, tag: Tag) {
+    fun measure(holder: TagAdapter.ItemViewHolder, tag: Taggable) {
 
         /* Get the ItemView and minimize it's height as small as possible
             to fit as many cells as it's possible in the screen. */
-        val itemView = holder.itemView.apply {
+        with(holder.itemView as TextView) {
             layoutParams.height = 1
-        }
 
-        val globalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
+            val globalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
 
-                // Remove the observer to avoid multiple callbacks.
-                itemView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    // Remove the observer to avoid multiple callbacks.
+                    viewTreeObserver.removeOnGlobalLayoutListener(this)
 
-                // Include also the horizontal margin of the layout.
-                val marginTotal =
-                    (itemView.rowTitle.layoutParams as ViewGroup.MarginLayoutParams).marginStart * 2
+                    // Include also the horizontal margin of the layout.
+                    val marginLayoutParams = layoutParams as ViewGroup.MarginLayoutParams
+                    val marginTotal = marginLayoutParams.marginStart + marginLayoutParams.marginEnd
+                    val paddingTotal = paddingStart/* + paddingEnd*/
 
-                // Required span for the holder in Float/
-                val span = (itemView.rowTitle.width + marginTotal) / baseCell
+                    // Required span for the holder in Float/
+                    val span = (width + marginTotal /*+ paddingTotal*/) / baseCell
 
-                // Increase measured count.
-                measuredCount++
+                    // Increase measured count.
+                    measuredCount++
 
-                rowManager.add(span, tag)
+                    rowManager.add(span, tag)
 
-                cellMeasured()
+                    cellMeasured()
+                }
             }
-        }
 
-        // Observe for the view
-        itemView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+            // Observe for the view
+            viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+        }
     }
 }
